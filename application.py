@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def hello():
-	return 'Hello World!!!', 200      # 200 is HTTP the response code to be returned to client
+	return 'Hello World Major Changes !!!', 200      # 200 is HTTP the response code to be returned to client
 
 from datetime import datetime
 @app.route('/datetime', methods=['GET'])
