@@ -1,4 +1,4 @@
-name: Build and Push Flaskapp Image
+name: Generate Docker Image Minor
 
 on:
   push:
