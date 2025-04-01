@@ -44,8 +44,10 @@ jobs:
         run: |
           git config --global user.name "rohitpatil07"
           git config --global user.email "rohitpatil07122001@gmail.com"
-          git remote set-url origin https://rohitpatil07:${{ secrets.PAT_GITHUB }}@github.com/rohitpatil07/myflaskapp.git
+          git remote set-url origin https://github.com/rohitpatil07/myflaskapp.git
+          echo "https://rohitpatil07:${{ secrets.PAT_GITHUB }}" > ~/.git-credentials
+          git config --global credential.helper store
           git tag ${{ env.NEW_TAG }}
-          git push origin ${{ env.NEW_TAG }} # Simplified push command
+          git push origin ${{ env.NEW_TAG }}
         env:
           PAT_GITHUB: ${{ secrets.PAT_GITHUB }}
