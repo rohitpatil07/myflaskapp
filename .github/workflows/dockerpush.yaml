@@ -1,4 +1,4 @@
-name: Generate Docker Image Minor
+name: Generate Docker Image
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Important: Fetch all history for tags
+          fetch-depth: 0 # Fetch all history for tags
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -24,15 +24,28 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
-      - name: Extract version from last tag
+      - name: Determine version bump
         id: get_version
         run: |
           LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
-          VERSION_MAJOR=$(echo $LAST_TAG | awk -F. '{print $1}')
-          VERSION_MINOR=$(echo $LAST_TAG | awk -F. '{print $2}')
-          VERSION_PATCH=$(echo $LAST_TAG | awk -F. '{print $3}')
-          NEW_PATCH=$((VERSION_PATCH + 1))
-          NEW_TAG="$VERSION_MAJOR.$VERSION_MINOR.$NEW_PATCH"
+          VERSION_MAJOR=$(echo $LAST_TAG | cut -d. -f1)
+          VERSION_MINOR=$(echo $LAST_TAG | cut -d. -f2)
+          VERSION_PATCH=$(echo $LAST_TAG | cut -d. -f3)
+
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+
+          if echo "$COMMIT_MSG" | grep -qE "BREAKING CHANGE:|upgrade:"; then
+            VERSION_MAJOR=$((VERSION_MAJOR + 1))
+            VERSION_MINOR=0
+            VERSION_PATCH=0
+          elif echo "$COMMIT_MSG" | grep -qE "^feat:"; then
+            VERSION_MINOR=$((VERSION_MINOR + 1))
+            VERSION_PATCH=0
+          else
+            VERSION_PATCH=$((VERSION_PATCH + 1))
+          fi
+
+          NEW_TAG="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH"
           echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
 
       - name: Build and push Docker image
