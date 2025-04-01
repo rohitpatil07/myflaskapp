@@ -34,7 +34,7 @@ jobs:
 
           COMMIT_MSG=$(git log -1 --pretty=%B)
 
-          if echo "$COMMIT_MSG" | grep -qE "BREAKING CHANGE:|upgrade:"; then
+          if echo "$COMMIT_MSG" | grep -qE "^upgrade:"; then
             VERSION_MAJOR=$((VERSION_MAJOR + 1))
             VERSION_MINOR=0
             VERSION_PATCH=0
