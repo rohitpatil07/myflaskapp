@@ -40,13 +40,6 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/myflaskapp:${{ env.NEW_TAG }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/myflaskapp:${{ env.NEW_TAG }}
 
-      - name: Debug Token # Keep this for debugging
-        run: |
-          echo "PAT_GITHUB length: ${#secrets.PAT_GITHUB}}" # Use secrets context
-          echo "PAT_GITHUB value (first 4 chars): ${{ secrets.PAT_GITHUB }}" | cut -c -4 # Mask sensitive data
-        env:
-          PAT_GITHUB: ${{ secrets.PAT_GITHUB }}
-
       - name: Configure Git and Push Tag
         run: |
           git config --global user.name "rohitpatil07"
