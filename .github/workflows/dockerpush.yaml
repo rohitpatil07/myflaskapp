@@ -37,7 +37,12 @@ jobs:
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/myflaskapp:${{ env.NEW_TAG }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/myflaskapp:${{ env.NEW_TAG }}
-
+      - name: Debug Token
+        run: |
+          echo "PAT_GITHUB length: ${#PAT_GITHUB}"
+        env:
+          PAT_GITHUB: ${{ secrets.PAT_GITHUB }}
+          
       - name: Configure Git and Push Tag
         run: |
           git config --global user.name "github-actions"
