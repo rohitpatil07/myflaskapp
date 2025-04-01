@@ -48,6 +48,6 @@ jobs:
           echo "https://rohitpatil07:${{ secrets.PAT_GITHUB }}" > ~/.git-credentials
           git config --global credential.helper store
           git tag ${{ env.NEW_TAG }}
-          git push origin ${{ env.NEW_TAG }}
+          git push https://rohitpatil07:${{ secrets.PAT_GITHUB }}@github.com/rohitpatil07/myflaskapp.git ${{ env.NEW_TAG }}
         env:
           PAT_GITHUB: ${{ secrets.PAT_GITHUB }}
