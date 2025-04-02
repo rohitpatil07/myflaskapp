@@ -45,8 +45,9 @@ jobs:
             VERSION_PATCH=$((VERSION_PATCH + 1))
           fi
 
-          NEW_TAG="v$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH"
+          NEW_TAG="v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
           echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
+          echo "New tag: $NEW_TAG"
 
       - name: Build and push Docker image
         run: |
@@ -80,9 +81,10 @@ jobs:
       - name: Update deployment.yaml with new image tag
         run: |
           cd argocd-demo
-          sed -i "s|image: rohitpatil07/myflaskapp:.*|image: rohitpatil07/myflaskapp:${{ env.NEW_TAG }}|" flaskapp/deployment.yaml
-          git config --global user.name "rohitpatil07"
-          git config --global user.email "rohitpatil07122001@gmail.com"
-          git add flaskapp/deployment.yaml
-          git commit -m "Update image tag to ${{ env.NEW_TAG }}"
-          git push
+          # sed -i "s|image: rohitpatil07/myflaskapp:.*|image: rohitpatil07/myflaskapp:${{ env.NEW_TAG }}|" flaskapp/deployment.yaml
+          # git config --global user.name "rohitpatil07"
+          # git config --global user.email "rohitpatil07122001@gmail.com"
+          # git add flaskapp/deployment.yaml
+          # git commit -m "Update image tag to ${{ env.NEW_TAG }}"
+          # git push
+          echo "New tag: $NEW_TAG"
