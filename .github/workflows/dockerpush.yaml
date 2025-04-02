@@ -83,10 +83,11 @@ jobs:
         run: |
           cd argocd-demo
           LATEST_TAG=$(git ls-remote --tags --refs https://github.com/rohitpatil07/myflaskapp.git | awk -F'/' '{print $NF}' | sed 's/^v*//' | sort -V | tail -n1)
-          # sed -i "s|image: rohitpatil07/myflaskapp:.*|image: rohitpatil07/myflaskapp:${{ env.NEW_TAG }}|" flaskapp/deployment.yaml
-          # git config --global user.name "rohitpatil07"
-          # git config --global user.email "rohitpatil07122001@gmail.com"
-          # git add flaskapp/deployment.yaml
-          # git commit -m "Update image tag to ${{ env.NEW_TAG }}"
-          # git push
           echo "New tag: v$LATEST_TAG"
+          sed -i "s|image: rohitpatil07/myflaskapp:.*|image: rohitpatil07/myflaskapp:v${LATEST_TAG}|" flaskapp/deployment.yaml
+          git config --global user.name "rohitpatil07"
+          git config --global user.email "rohitpatil07122001@gmail.com"
+          git add flaskapp/deployment.yaml
+          git commit -m "Update image tag to v${LATEST_TAG}"
+          git push
+    
