@@ -28,6 +28,7 @@ jobs:
         id: get_version
         run: |
           LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
+          LAST_TAG=$(echo "$LAST_TAG" | sed 's/^v*//') #remove all v's in beginning
           VERSION_MAJOR=$(echo $LAST_TAG | cut -d. -f1)
           VERSION_MINOR=$(echo $LAST_TAG | cut -d. -f2)
           VERSION_PATCH=$(echo $LAST_TAG | cut -d. -f3)
